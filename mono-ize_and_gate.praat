@@ -1,21 +1,13 @@
-# let the user choose a sound
-filename$ = chooseReadFile$: "Open a sound file"
-if filename$ <> ""
-    Read from file: filename$
-endif
+# Let the user select the channel
+pauseScript: "Select the interviewee's channel and press Continue"
 
-stereoFile = selected ("Sound")
-selectObject: stereoFile
-leftChannel = Extract one channel: 1
-selectObject: stereoFile
-rightChannel = Extract one channel: 2
+# Let the user set the gate threshold
+beginPause: "Set the gate threshold"
+	comment: "Set the gate threshold"
+	real: "Silence threshold (dB)", -37
+clicked = endPause: "Continue", 1
 
-pauseScript: "Please select the interviewee's channel and press Continue"
-
-form Set the gate threshold
-	real Silence_threshold_(dB) -35
-endform
-
+# Run gate.praat script (from Vocal Toolkit http://www.praatvocaltoolkit.com/)
 runScript: "gate.praat", silence_threshold, 0.1, 0.05, "no", "no"
 gateSound = selected ("Sound")
 
@@ -23,7 +15,11 @@ gateSound = selected ("Sound")
 darla$ = replace$ (filename$, ".wav", "", 1) + "_DARLA.wav"
 Save as WAV file: darla$
 
+# Remove all sounds
 removeObject: gateSound
 removeObject: stereoFile
 removeObject: leftChannel
 removeObject: rightChannel
+
+# Open saved file for audition by user
+Open long sound file: darla$
