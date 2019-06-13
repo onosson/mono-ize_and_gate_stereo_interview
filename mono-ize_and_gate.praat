@@ -1,3 +1,16 @@
+# Let the user choose a sound
+filename$ = chooseReadFile$: "Open a sound file"
+if filename$ <> ""
+    Read from file: filename$
+endif
+
+# Extract channels
+stereoFile = selected ("Sound")
+selectObject: stereoFile
+leftChannel = Extract one channel: 1
+selectObject: stereoFile
+rightChannel = Extract one channel: 2
+
 # Let the user select the channel
 pauseScript: "Select the interviewee's channel and press Continue"
 
@@ -23,3 +36,4 @@ removeObject: rightChannel
 
 # Open saved file for audition by user
 Open long sound file: darla$
+View
